@@ -38,7 +38,7 @@ CREATE TABLE public.operation
     PRIMARY KEY (id)
 );
 
-CREATE TABLE public.events
+CREATE TABLE public.event
 (
     id bigserial NOT NULL,
     id_patient bigserial NOT NULL,
