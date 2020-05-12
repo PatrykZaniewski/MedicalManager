@@ -1,6 +1,7 @@
 package medManager.model;
 
 import javax.persistence.*;
+import javax.print.Doc;
 import java.util.Date;
 
 @Entity
@@ -9,9 +10,15 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int id_patient;
-    private int id_doctor;
-    private int id_hospital;
+    @ManyToOne
+    @JoinColumn(name = "id_patient", referencedColumnName = "id")
+    private Patient patient;
+    @ManyToOne
+    @JoinColumn(name = "id_doctor", referencedColumnName = "id")
+    private Doctor doctor;
+    @ManyToOne
+    @JoinColumn(name = "id_hospital", referencedColumnName = "id")
+    private Hospital hospital;
     @Column(name = "eventdate")
     private Date eventDate;
     private boolean billable;
@@ -25,28 +32,28 @@ public class Event {
         this.id = id;
     }
 
-    public int getId_patient() {
-        return id_patient;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setId_patient(int id_patient) {
-        this.id_patient = id_patient;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public int getId_doctor() {
-        return id_doctor;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setId_doctor(int id_doctor) {
-        this.id_doctor = id_doctor;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
-    public int getId_hospital() {
-        return id_hospital;
+    public Hospital getHospital() {
+        return hospital;
     }
 
-    public void setId_hospital(int id_hospital) {
-        this.id_hospital = id_hospital;
+    public void setHospital(Hospital hospital) {
+        this.hospital = hospital;
     }
 
     public Date getEventDate() {

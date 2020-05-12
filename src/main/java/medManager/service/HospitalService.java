@@ -5,6 +5,7 @@ import medManager.model.Hospital;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,11 @@ public class HospitalService {
         if(optionalHospital.isPresent()){
             return optionalHospital.get();
         }
+        return null;
+    }
+
+    public Hospital getAll(){
+        ArrayList<Hospital> hospitalList = (ArrayList<Hospital>) hospitalRepository.findAll();
         return null;
     }
 }

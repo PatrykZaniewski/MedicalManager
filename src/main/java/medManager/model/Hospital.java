@@ -2,6 +2,8 @@ package medManager.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "hospital")
@@ -12,7 +14,10 @@ public class Hospital {
     private String name;
     private String street;
     private String city;
+    @Column(name = "ispublic")
     private boolean isPublic;
+    @ManyToMany(mappedBy = "hospitals")
+    private Set<Doctor> doctors = new HashSet<>();
 
     public int getId() {
         return id;
@@ -52,5 +57,13 @@ public class Hospital {
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public Set<Doctor> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(Set<Doctor> doctors) {
+        this.doctors = doctors;
     }
 }

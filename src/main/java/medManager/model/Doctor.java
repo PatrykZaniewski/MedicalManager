@@ -1,7 +1,11 @@
 package medManager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "doctor")
@@ -13,6 +17,14 @@ public class Doctor {
     private String lastname;
     private String specialization;
     private String degree;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "doctor_hospital",
+            joinColumns = { @JoinColumn(name = "id_doctor") },
+            inverseJoinColumns = { @JoinColumn(name = "id_hospital") }
+    )
+    Set<Hospital> hospitals = new HashSet<>();
 
     public int getId() {
         return id;
@@ -52,5 +64,13 @@ public class Doctor {
 
     public void setDegree(String degree) {
         this.degree = degree;
+    }
+
+    public Set<Hospital> getHospitals() {
+        return hospitals;
+    }
+
+    public void setHospitals(Set<Hospital> hospitals) {
+        this.hospitals = hospitals;
     }
 }
