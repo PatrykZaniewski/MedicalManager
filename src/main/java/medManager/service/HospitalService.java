@@ -2,6 +2,7 @@ package medManager.service;
 
 import medManager.dao.HospitalRepository;
 import medManager.model.Hospital;
+import medManager.service.hospitalPOJO.HospitalDoctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,17 @@ public class HospitalService {
         return null;
     }
 
-    public Hospital getAll(){
-        ArrayList<Hospital> hospitalList = (ArrayList<Hospital>) hospitalRepository.findAll();
-        return null;
+    public ArrayList<Hospital> getAll(){
+        return (ArrayList<Hospital>) hospitalRepository.findAll();
+    }
+
+    public ArrayList<HospitalDoctor> getHospitalDoctor(){
+        ArrayList<Hospital> hospitalArrayList = getAll();
+        ArrayList<HospitalDoctor> hospitalDoctorArrayList = new ArrayList<>();
+        for(Hospital hospital: hospitalArrayList){
+            HospitalDoctor hospitalDoctor = new HospitalDoctor(hospital.getName(), hospital.getCity() + ", " + hospital.getStreet(), hospital.isPublic(), hospital.getDoctors());
+            hospitalDoctorArrayList.add(hospitalDoctor);
+        }
+        return hospitalDoctorArrayList;
     }
 }

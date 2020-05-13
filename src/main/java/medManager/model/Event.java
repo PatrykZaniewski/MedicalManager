@@ -19,6 +19,9 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "id_hospital", referencedColumnName = "id")
     private Hospital hospital;
+    @ManyToOne
+    @JoinColumn(name = "id_operation", referencedColumnName = "id")
+    private Operation operation;
     @Column(name = "eventdate")
     private Date eventDate;
     private boolean billable;
@@ -54,6 +57,14 @@ public class Event {
 
     public void setHospital(Hospital hospital) {
         this.hospital = hospital;
+    }
+
+    public Operation getOperation() {
+        return operation;
+    }
+
+    public void setOperation(Operation operation) {
+        this.operation = operation;
     }
 
     public Date getEventDate() {

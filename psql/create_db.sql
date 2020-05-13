@@ -43,7 +43,7 @@ CREATE TABLE public.doctor_hospital
 CREATE TABLE public.operation
 (
     id bigserial NOT NULL,
-    specialization text NOT NULL
+    specialization text,
     name text NOT NULL,
     PRIMARY KEY (id)
 );
@@ -54,13 +54,15 @@ CREATE TABLE public.event
     id_patient bigserial NOT NULL,
     id_doctor bigserial NOT NULL,
     id_hospital bigserial NOT NULL,
+    id_operation bigserial NOT NULL,
     eventdate date NOT NULL,
     billable BOOLEAN NOT NULL,
     cost real NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_patient) REFERENCES public.patient (id),
     FOREIGN KEY (id_doctor) REFERENCES public.doctor (id),
-    FOREIGN KEY (id_hospital) REFERENCES public.hospital (id)
+    FOREIGN KEY (id_hospital) REFERENCES public.hospital (id),
+    FOREIGN KEY (id_operation) REFERENCES public.operation (id)
 );
 
 INSERT INTO patient (firstname, lastname, pesel, birthdate, residence, phone) values ('Jan', 'Kowalski', '95111504845', '2013-06-13', 'Warszawa', '545747695');
@@ -71,4 +73,4 @@ INSERT INTO hospital (name, street, city, isPublic) values ('Prywatny nr 1', 'Sz
 INSERT INTO doctor_hospital (id_doctor, id_hospital) values (1, 1), (1, 2), (2, 2);
 
 INSERT INTO operation (name) values ('konsultacja');
-INSERT INTO event (id_patient, id_doctor, id_hospital, eventdate, billable, cost) values ('1','1','1', '2011-06-13', 'f', '0');
+INSERT INTO event (id_patient, id_doctor, id_hospital, id_operation, eventdate, billable, cost) values ('1','1','1','1', '2011-06-13', 'f', '0');
