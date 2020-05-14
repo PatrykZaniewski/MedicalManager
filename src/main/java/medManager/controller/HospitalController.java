@@ -5,12 +5,10 @@ import medManager.service.HospitalService;
 import medManager.service.hospitalPOJO.HospitalDoctor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/hospital")
@@ -38,6 +36,19 @@ public class HospitalController {
             return new ResponseEntity<>(hospitalDoctorArrayList, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping(value = "/")
+    public ResponseEntity<Object> addHospital(@RequestBody Map<String, String> payload){
+        //TODO walidacja moze?
+        if (payload == null){
+            return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
+        }
+        int code = hospitalService.addOne(payload);
+        if(code == -1){
+            return new ResponseEntity<>("Missing data in json", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Hospital added", HttpStatus.OK);
     }
 
 }

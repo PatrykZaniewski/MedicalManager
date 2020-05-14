@@ -4,10 +4,9 @@ import medManager.model.Operation;
 import medManager.service.OperationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/operation")
@@ -26,5 +25,18 @@ public class OperationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(operation, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/")
+    public ResponseEntity<Object> addOne(@RequestBody Map<String, String> payload){
+        //TODO walidacja moze?
+        if (payload == null){
+            return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
+        }
+        int code = operationService.addOne(payload);
+        if(code == -1){
+            return new ResponseEntity<>("Missing data in json", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Operation added", HttpStatus.OK);
     }
 }

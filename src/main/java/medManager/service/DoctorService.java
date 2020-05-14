@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -41,5 +42,26 @@ public class DoctorService {
             doctorHospitalArrayList.add(doctorHospital);
         }
         return doctorHospitalArrayList;
+    }
+
+    public int addOne(Map<String, String> payload){
+        String firstname = payload.get("firstname");
+        String lastname = payload.get("lastname");
+        String specialization = payload.get("specialization");
+        String degree = payload.get("degree");
+
+        if(firstname == null || lastname == null || specialization == null || degree == null){
+            return -1;
+        }
+
+        Doctor doctor = new Doctor();
+        doctor.setFirstname(firstname);
+        doctor.setLastname(lastname);
+        doctor.setSpecialization(specialization);
+        doctor.setDegree(degree);
+
+        doctorRepository.save(doctor);
+
+        return 0;
     }
 }
