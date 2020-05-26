@@ -1,12 +1,13 @@
 package medManager.service;
 
 import medManager.dao.EventRepository;
-import medManager.model.Doctor;
-import medManager.model.Event;
-import medManager.model.Patient;
+import medManager.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,6 +38,10 @@ public class EventService {
         return null;
     }
 
+    public ArrayList<Event> getAll(){
+        return (ArrayList<Event>)eventRepository.findAll();
+    }
+
     public int addOne(Map<String, String> payload){
         String id_patientString = payload.get("id_patient");
         String id_doctorString = payload.get("id_doctor");
@@ -52,20 +57,118 @@ public class EventService {
         }
 
         int id_patient = Integer.parseInt(id_patientString);
-        int
+        int id_doctor = Integer.parseInt(id_doctorString);
+        int id_hospital = Integer.parseInt(id_hospitalString);
+        int id_operation = Integer.parseInt(id_operationString);
+        Date eventDate = Date.valueOf(eventDateString);
+        boolean bilalble = Boolean.getBoolean(billableString);
+        int cost = Integer.parseInt(costString);
 
-        if(patientService.getOne())
+        Patient patient = patientService.getOne(id_patient);
+        Doctor doctor = doctorService.getOne(id_doctor);
+        Hospital hospital = hospitalService.getOne(id_hospital);
+        Operation operation = operationService.getOne(id_operation);
+
+
+        if(patient == null){
+            return -2;
+        }
+
+        if(doctor == null){
+            return -3;
+        }
+
+        if(hospital == null){
+            return -4;
+        }
+
+        if(operation == null){
+            return -5;
+        }
 
         Event event = new Event();
-        event.set(firstname);
-        event.setLastname(lastname);
-        event.setSpecialization(specialization);
-        event.setDegree(degree);
-        event.setSpecialization(specialization);
-        event.setDegree(degree);
+        event.setPatient(patient);
+        event.setDoctor(doctor);
+        event.setHospital(hospital);
+        event.setOperation(operation);
+        event.setEventDate(eventDate);
+        event.setBillable(bilalble);
+        event.setCost(cost);
 
-        doctorRepository.save(doctor);
+        eventRepository.save(event);
 
+        return 0;
+    }
+
+    public int updateOne(Map<String, String> payload, int id){
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+
+        if(!optionalEvent.isPresent()){
+            return -1;
+        }
+
+        Event event = optionalEvent.get();
+
+        if(payload.get("id_patient") != null){
+            Patient patient = patientService.getOne(Integer.parseInt(payload.get("id_patient")));
+            if(patient == null){
+                return -2;
+            }
+            event.setPatient(patient);
+        }
+
+        if(payload.get("id_doctor") != null){
+            Doctor doctor = doctorService.getOne(Integer.parseInt(payload.get("id_doctor")));
+            if(doctor == null){
+                return -3;
+            }
+            event.setDoctor(doctor);
+        }
+
+        if(payload.get("id_hospital") != null){
+            Hospital hospital = hospitalService.getOne(Integer.parseInt(payload.get("id_hospitalString")));
+            if(hospital == null){
+                return -4;
+            }
+            event.setHospital(hospital);
+        }
+
+        if(payload.get("id_operation") != null){
+            Operation operation = operationService.getOne(Integer.parseInt(payload.get("id_operation")));
+            if(operation == null){
+                return -5;
+            }
+            event.setOperation(operation);
+        }
+
+        if(payload.get("eventdate") != null){
+            event.setEventDate(Date.valueOf(payload.get("eventdate")));
+        }
+
+        if(payload.get("billable") != null){
+            event.setBillable(Boolean.getBoolean(payload.get("billable")));
+        }
+
+        if(payload.get("billable") != null){
+            event.setBillable(Boolean.getBoolean(payload.get("billable")));
+        }
+
+        if(payload.get("cost") != null){
+            event.setCost(Integer.parseInt(payload.get("cost")));
+        }
+
+        eventRepository.save(event);
+        return 0;
+    }
+
+    public int deleteOne(int id){
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+
+        if(!optionalEvent.isPresent()){
+            return -1;
+        }
+
+        eventRepository.delete(optionalEvent.get());
         return 0;
     }
 }

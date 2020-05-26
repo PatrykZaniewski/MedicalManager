@@ -53,4 +53,27 @@ public class DoctorController {
         }
         return new ResponseEntity<>("Doctor added", HttpStatus.OK);
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Object> modifyDoctor(@PathVariable("id") int id, @RequestBody Map<String, String> payload) {
+        if (payload == null) {
+            return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
+        }
+        int code = doctorService.updateOne(payload, id);
+        if (code == -1) {
+            return new ResponseEntity<>("Doctor not found", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Doctor updated", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> deleteDoctor(@PathVariable("id") int id) {
+        int code = doctorService.deleteOne(id);
+        if (code == -1) {
+            return new ResponseEntity<>("Doctor not found", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Doctor deleted", HttpStatus.OK);
+    }
+
+
 }

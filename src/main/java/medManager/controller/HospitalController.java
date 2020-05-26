@@ -51,4 +51,25 @@ public class HospitalController {
         return new ResponseEntity<>("Hospital added", HttpStatus.OK);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Object> modifyHospital(@PathVariable("id") int id, @RequestBody Map<String, String> payload) {
+        if (payload == null) {
+            return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
+        }
+        int code = hospitalService.updateOne(payload, id);
+        if (code == -1) {
+            return new ResponseEntity<>("Hospital not found", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Hospital updated", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> deleteEvent(@PathVariable("id") int id) {
+        int code = hospitalService.deleteOne(id);
+        if (code == -1) {
+            return new ResponseEntity<>("Hospital not found", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Hospital deleted", HttpStatus.OK);
+    }
+
 }

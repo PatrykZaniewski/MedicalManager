@@ -1,13 +1,13 @@
 package medManager.service;
 
 import medManager.dao.DoctorRepository;
-import medManager.model.Doctor;
-import medManager.model.Hospital;
+import medManager.model.*;
 import medManager.service.doctorPOJO.DoctorHospital;
 import medManager.service.hospitalPOJO.HospitalDoctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +62,46 @@ public class DoctorService {
 
         doctorRepository.save(doctor);
 
+        return 0;
+    }
+
+    public int updateOne(Map<String, String> payload, int id){
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(id);
+
+        if(!optionalDoctor.isPresent()){
+            return -1;
+        }
+
+        Doctor doctor = optionalDoctor.get();
+
+        if(payload.get("firstname") != null){
+            doctor.setFirstname(payload.get("firstname"));
+        }
+
+        if(payload.get("lastname") != null){
+            doctor.setLastname(payload.get("lastname"));
+        }
+
+        if(payload.get("specialization") != null){
+            doctor.setSpecialization(payload.get("specialization"));
+        }
+
+        if(payload.get("degree") != null){
+            doctor.setDegree(payload.get("degree"));
+        }
+
+        doctorRepository.save(doctor);
+        return 0;
+    }
+
+    public int deleteOne(int id){
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(id);
+
+        if(!optionalDoctor.isPresent()){
+            return -1;
+        }
+
+        doctorRepository.delete(optionalDoctor.get());
         return 0;
     }
 }
