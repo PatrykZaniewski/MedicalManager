@@ -2,7 +2,6 @@ package medManager.service.hospitalPOJO;
 
 import medManager.model.Doctor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class HospitalDoctor {
@@ -11,7 +10,7 @@ public class HospitalDoctor {
     private boolean isPublic;
     private Set<Doctor> doctors;
 
-    public HospitalDoctor(String hospitalName, String hospitalAddress, boolean isPublic, Set<Doctor> doctors){
+    public HospitalDoctor(String hospitalName, String hospitalAddress, boolean isPublic, Set<Doctor> doctors) {
         this.hospitalName = hospitalName;
         this.hospitalAddress = hospitalAddress;
         this.isPublic = isPublic;

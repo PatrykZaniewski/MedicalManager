@@ -16,36 +16,36 @@ public class HospitalController {
 
     private HospitalService hospitalService;
 
-    public HospitalController(HospitalService hospitalService){
+    public HospitalController(HospitalService hospitalService) {
         this.hospitalService = hospitalService;
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Hospital> getOne(@PathVariable("id") int id){
+    public ResponseEntity<Hospital> getOne(@PathVariable("id") int id) {
         Hospital hospital = hospitalService.getOne(id);
-        if(hospital == null){
+        if (hospital == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(hospital, HttpStatus.OK);
     }
 
     @GetMapping(value = "/doctors")
-    public ResponseEntity<ArrayList<HospitalDoctor>> getHospitalsDoctors(){
+    public ResponseEntity<ArrayList<HospitalDoctor>> getHospitalsDoctors() {
         ArrayList<HospitalDoctor> hospitalDoctorArrayList = hospitalService.getHospitalDoctor();
-        if(hospitalDoctorArrayList != null) {
+        if (hospitalDoctorArrayList != null) {
             return new ResponseEntity<>(hospitalDoctorArrayList, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<Object> addHospital(@RequestBody Map<String, String> payload){
+    public ResponseEntity<Object> addHospital(@RequestBody Map<String, String> payload) {
         //TODO walidacja moze?
-        if (payload == null){
+        if (payload == null) {
             return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
         }
         int code = hospitalService.addOne(payload);
-        if(code == -1){
+        if (code == -1) {
             return new ResponseEntity<>("Missing data in json", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Hospital added", HttpStatus.OK);
@@ -70,6 +70,28 @@ public class HospitalController {
             return new ResponseEntity<>("Hospital not found", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Hospital deleted", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/filtered")
+    public ResponseEntity<Object> getFilteredHospital(@RequestParam(required = false, name = "city") String city,
+                                                      @RequestParam(required = false, name = "street") String street,
+                                                      @RequestParam(required = false, name = "isPublic") String isPublic) {
+        if (city == null) {
+            city = "";
+        }
+        if (street == null) {
+            street = "";
+        }
+
+        ArrayList<Hospital> hospitals;
+
+        try {
+            Boolean.parseBoolean(isPublic);
+            hospitals = hospitalService.getFiltered(city, street, isPublic);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>("Wrong data in json. Parse problem.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(hospitals, HttpStatus.OK);
     }
 
 }

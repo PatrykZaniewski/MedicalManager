@@ -1,11 +1,10 @@
 package medManager.service;
 
 import medManager.dao.OperationRepository;
-import medManager.model.*;
+import medManager.model.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,23 +14,23 @@ public class OperationService {
     private OperationRepository operationRepository;
 
     @Autowired
-    public OperationService(OperationRepository operationRepository){
+    public OperationService(OperationRepository operationRepository) {
         this.operationRepository = operationRepository;
     }
 
-    public Operation getOne(int id){
+    public Operation getOne(int id) {
         Optional<Operation> optionalOperation = operationRepository.findById(id);
-        if(optionalOperation.isPresent()){
+        if (optionalOperation.isPresent()) {
             return optionalOperation.get();
         }
         return null;
     }
 
-    public int addOne(Map<String, String> payload){
+    public int addOne(Map<String, String> payload) {
         String name = payload.get("name");
         String specialization = payload.get("specialization");
 
-        if(name == null || specialization == null){
+        if (name == null || specialization == null) {
             return -1;
         }
 
@@ -44,20 +43,20 @@ public class OperationService {
         return 0;
     }
 
-    public int updateOne(Map<String, String> payload, int id){
+    public int updateOne(Map<String, String> payload, int id) {
         Optional<Operation> optionalOperation = operationRepository.findById(id);
 
-        if(!optionalOperation.isPresent()){
+        if (!optionalOperation.isPresent()) {
             return -1;
         }
 
         Operation operation = optionalOperation.get();
 
-        if(payload.get("name") != null){
+        if (payload.get("name") != null) {
             operation.setName(payload.get("name"));
         }
 
-        if(payload.get("specialization") != null){
+        if (payload.get("specialization") != null) {
             operation.setSpecialization(payload.get("specialization"));
         }
 
@@ -65,10 +64,10 @@ public class OperationService {
         return 0;
     }
 
-    public int deleteOne(int id){
+    public int deleteOne(int id) {
         Optional<Operation> optionalOperation = operationRepository.findById(id);
 
-        if(!optionalOperation.isPresent()){
+        if (!optionalOperation.isPresent()) {
             return -1;
         }
 

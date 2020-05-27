@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -62,5 +63,43 @@ public class EventController {
             return new ResponseEntity<>("Event not found", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Event deleted", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/filtered")
+    public ResponseEntity<Object> getFilteredEvent(@RequestParam(required = false, name = "city") String city,
+                                                   @RequestParam(required = false, name = "isPublic") String isPublic,
+                                                   @RequestParam(required = false, name = "minCost") String minCost,
+                                                   @RequestParam(required = false, name = "maxCost") String maxCost,
+                                                   @RequestParam(required = false, name = "doctorName") String doctor,
+                                                   @RequestParam(required = false, name = "hospitalName") String hospital,
+                                                   @RequestParam(required = false, name = "patientName") String patient) {
+        if (city == null) {
+            city = "";
+        }
+        if (minCost == null) {
+            minCost = "0";
+        }
+        if (maxCost == null) {
+            maxCost = "0";
+        }
+        if (doctor == null) {
+            doctor = "";
+        }
+        if (hospital == null) {
+            hospital = "";
+        }
+        if (patient == null) {
+            patient = "";
+        }
+
+        ArrayList<Event> events;
+
+        try {
+            Boolean.parseBoolean(isPublic);
+            events = eventService.getFiltered(city, isPublic, Integer.parseInt(minCost), Integer.parseInt(maxCost), doctor, hospital, patient);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>("Wrong data in json. Parse problem.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 }

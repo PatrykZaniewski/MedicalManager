@@ -1,12 +1,9 @@
 package medManager.service;
 
 import medManager.dao.DoctorHospitalRepository;
-import medManager.dao.DoctorRepository;
-import medManager.dao.HospitalRepository;
 import medManager.model.Doctor;
 import medManager.model.DoctorHospital;
 import medManager.model.Hospital;
-import medManager.service.hospitalPOJO.HospitalDoctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +17,21 @@ public class DoctorHospitalService {
     private HospitalService hospitalService;
 
     @Autowired
-    public DoctorHospitalService(DoctorHospitalRepository doctorHospitalRepository, DoctorService doctorService, HospitalService hospitalService){
+    public DoctorHospitalService(DoctorHospitalRepository doctorHospitalRepository, DoctorService doctorService, HospitalService hospitalService) {
         this.doctorHospitalRepository = doctorHospitalRepository;
         this.doctorService = doctorService;
         this.hospitalService = hospitalService;
     }
 
-    public int addOne(Doctor doctor, Hospital hospital){
+    public int addOne(Doctor doctor, Hospital hospital) {
         return 0;
     }
 
-    public int getDoctorHospital(int id_doctor, int id_hospital){
+    public int getDoctorHospital(int id_doctor, int id_hospital) {
         //TODO dokonczyc
         Doctor doctor = doctorService.getOne(id_doctor);
         Hospital hospital = hospitalService.getOne(id_hospital);
-        if(doctor == null || hospital == null){
+        if (doctor == null || hospital == null) {
             return -1;
         }
         Optional<DoctorHospital> doctorHospital = doctorHospitalRepository.getDoctorHospital(id_doctor, id_hospital);

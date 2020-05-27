@@ -1,7 +1,6 @@
 package medManager.model;
 
 import javax.persistence.*;
-import javax.print.Doc;
 import java.util.Date;
 
 @Entity

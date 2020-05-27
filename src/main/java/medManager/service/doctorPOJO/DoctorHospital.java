@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DoctorHospital {
+    Set<Hospital> hospitals = new HashSet<>();
     private String name;
     private String degree;
     private String specialization;
-    Set<Hospital> hospitals = new HashSet<>();
 
-    public DoctorHospital(String name, String degree, String specialization, Set<Hospital> hospitals){
+    public DoctorHospital(String name, String degree, String specialization, Set<Hospital> hospitals) {
         this.name = name;
         this.degree = degree;
         this.specialization = specialization;
