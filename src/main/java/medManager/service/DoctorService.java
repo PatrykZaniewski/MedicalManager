@@ -2,23 +2,25 @@ package medManager.service;
 
 import medManager.dao.DoctorRepository;
 import medManager.model.Doctor;
+import medManager.model.Event;
+import medManager.model.Hospital;
+import medManager.model.Patient;
 import medManager.service.doctorPOJO.DoctorHospital;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DoctorService {
 
     private DoctorRepository doctorRepository;
+    private EventService eventService;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository) {
+    public DoctorService(DoctorRepository doctorRepository, EventService eventService) {
         this.doctorRepository = doctorRepository;
+        this.eventService = eventService;
     }
 
     public Doctor getOne(int id) {
@@ -151,6 +153,33 @@ public class DoctorService {
             doctors.get(0).retainAll(doctors.get(i));
         }
         return (ArrayList<Doctor>) doctors.get(0);
+    }
+
+    public Map<String, Integer> getStatistics(int id){
+
+        Doctor doctor = this.getOne(id);
+
+        if(doctor == null){
+            return null;
+        }
+
+        Map<String, Integer> statistics = new HashMap<>();
+
+        Set<Patient> patients = new HashSet<>();
+        Set<Hospital> hospitalsOld = new HashSet<>();
+
+        ArrayList<Event> doctorEvents = eventService.getFiltered("", "", 0, 0, doctor.getDegree() + " " + doctor.getFirstname() + " " + doctor.getLastname(), "", "");
+
+        for(Event event: doctorEvents){
+            patients.add(event.getPatient());
+            hospitalsOld.add(event.getHospital());
+        }
+        statistics.put("Events", doctorEvents.size());
+        statistics.put("Patients", patients.size());
+        statistics.put("Hospitals now", doctor.getHospitals().size());
+        statistics.put("Hospitals old", hospitalsOld.size());
+
+        return statistics;
     }
 
 }

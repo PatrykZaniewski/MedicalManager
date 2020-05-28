@@ -42,7 +42,6 @@ public class DoctorController {
 
     @PostMapping(value = "/")
     public ResponseEntity<Object> addDoctor(@RequestBody Map<String, String> payload) {
-        //TODO walidacja moze?
         if (payload == null) {
             return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
         }
@@ -99,7 +98,11 @@ public class DoctorController {
 
     @GetMapping(value = "/statistics/{id}")
     public ResponseEntity<Object> getStatistics(@PathVariable("id") int id){
-        return null;
+        Map<String, Integer> statistics = doctorService.getStatistics(id);
+        if(statistics == null){
+            return new ResponseEntity<>("Doctor not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 
 }

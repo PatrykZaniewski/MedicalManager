@@ -40,7 +40,6 @@ public class HospitalController {
 
     @PostMapping(value = "/")
     public ResponseEntity<Object> addHospital(@RequestBody Map<String, String> payload) {
-        //TODO walidacja moze?
         if (payload == null) {
             return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
         }
@@ -92,6 +91,15 @@ public class HospitalController {
             return new ResponseEntity<>("Wrong data in json. Parse problem.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(hospitals, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/statistics/{id}")
+    public ResponseEntity<Object> getStatistics(@PathVariable("id") int id){
+        Map<String, Integer> statistics = hospitalService.getStatistics(id);
+        if(statistics == null){
+            return new ResponseEntity<>("Hospital not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 
 }

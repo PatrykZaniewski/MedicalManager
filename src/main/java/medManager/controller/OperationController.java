@@ -29,7 +29,6 @@ public class OperationController {
 
     @PostMapping(value = "/")
     public ResponseEntity<Object> addOne(@RequestBody Map<String, String> payload) {
-        //TODO walidacja moze?
         if (payload == null) {
             return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
         }
@@ -59,5 +58,14 @@ public class OperationController {
             return new ResponseEntity<>("Operation not found", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Operation deleted", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/statistics")
+    public ResponseEntity<Object> getStatistics(){
+        Map<String, Integer> statistics = operationService.getStatistics();
+        if(statistics == null){
+            return new ResponseEntity<>("Operation not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 }

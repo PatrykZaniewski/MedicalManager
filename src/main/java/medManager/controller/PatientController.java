@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/patients")
+@RequestMapping(value = "/patient")
 public class PatientController {
 
     private PatientService patientService;
@@ -32,7 +32,6 @@ public class PatientController {
 
     @PostMapping(value = "/")
     public ResponseEntity<Object> addPatient(@RequestBody Map<String, String> payload) {
-        //TODO walidacja moze?
         if (payload == null) {
             return new ResponseEntity<>("Lack of payload", HttpStatus.BAD_REQUEST);
         }

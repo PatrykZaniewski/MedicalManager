@@ -1,24 +1,27 @@
 package medManager.service;
 
 import medManager.dao.HospitalRepository;
+import medManager.model.Doctor;
+import medManager.model.Event;
 import medManager.model.Hospital;
+import medManager.model.Patient;
 import medManager.service.hospitalPOJO.HospitalDoctor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class HospitalService {
 
     private HospitalRepository hospitalRepository;
+    private EventService eventService;
 
     @Autowired
-    public HospitalService(HospitalRepository hospitalRepository) {
+    public HospitalService(@Lazy HospitalRepository hospitalRepository, EventService eventService) {
         this.hospitalRepository = hospitalRepository;
+        this.eventService = eventService;
     }
 
     public Hospital getOne(int id) {
@@ -140,5 +143,31 @@ public class HospitalService {
             hospitals.get(0).retainAll(hospitals.get(i));
         }
         return (ArrayList<Hospital>) hospitals.get(0);
+    }
+
+    public Map<String, Integer> getStatistics(int id){
+
+        Hospital hospital = this.getOne(id);
+
+        if(hospital == null){
+            return null;
+        }
+
+        Map<String, Integer> statistics = new HashMap<>();
+
+        Set<Patient> patients = new HashSet<>();
+        Set<Doctor> doctors = new HashSet<>();
+
+        ArrayList<Event> hospitalEvents = eventService.getFiltered("", "", 0, 0, "", "", "");
+
+        for(Event event: hospitalEvents){
+            patients.add(event.getPatient());
+            doctors.add(event.getDoctor());
+        }
+        statistics.put("Events", hospitalEvents.size());
+        statistics.put("Patients", patients.size());
+        statistics.put("Doctors", doctors.size());
+
+        return statistics;
     }
 }

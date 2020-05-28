@@ -9,10 +9,10 @@ public class DoctorHospital {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "id_doctor", referencedColumnName = "id")
     private Doctor doctor;
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "id_hospital", referencedColumnName = "id")
     private Hospital hospital;
 

@@ -1,21 +1,23 @@
 package medManager.service;
 
 import medManager.dao.OperationRepository;
-import medManager.model.Operation;
+import medManager.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OperationService {
 
     private OperationRepository operationRepository;
+    private EventService eventService;
 
     @Autowired
-    public OperationService(OperationRepository operationRepository) {
+    public OperationService(@Lazy OperationRepository operationRepository, @Lazy EventService eventService) {
         this.operationRepository = operationRepository;
+        this.eventService = eventService;
     }
 
     public Operation getOne(int id) {
@@ -73,5 +75,23 @@ public class OperationService {
 
         operationRepository.delete(optionalOperation.get());
         return 0;
+    }
+
+    public Map<String, Integer> getStatistics(){
+
+        Map<String, Integer> statistics = new HashMap<>();
+
+        ArrayList<Event> events = eventService.getAll();
+
+        for(Event event: events){
+            if(statistics.get(event.getOperation().getName()) == null){
+                statistics.put(event.getOperation().getName(), 1);
+            }
+            else
+            {
+                statistics.put(event.getOperation().getName(), statistics.get(event.getOperation().getName()) + 1);
+            }
+        }
+        return statistics;
     }
 }

@@ -3,6 +3,7 @@ package medManager.service;
 import medManager.dao.EventRepository;
 import medManager.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -21,8 +22,8 @@ public class EventService {
     private DoctorService doctorService;
 
     @Autowired
-    public EventService(EventRepository eventRepository, PatientService patientService, HospitalService hospitalService,
-                        OperationService operationService, DoctorService doctorService) {
+    public EventService(@Lazy EventRepository eventRepository, @Lazy PatientService patientService, @Lazy HospitalService hospitalService,
+                        @Lazy OperationService operationService, @Lazy DoctorService doctorService) {
         this.eventRepository = eventRepository;
         this.patientService = patientService;
         this.hospitalService = hospitalService;
