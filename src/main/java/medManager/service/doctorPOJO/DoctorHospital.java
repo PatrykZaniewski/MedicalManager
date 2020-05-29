@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DoctorHospital {
-    Set<Hospital> hospitals = new HashSet<>();
+    private Set<String> hospitals = new HashSet<>();
     private String name;
     private String degree;
     private String specialization;
@@ -15,7 +15,9 @@ public class DoctorHospital {
         this.name = name;
         this.degree = degree;
         this.specialization = specialization;
-        this.hospitals = hospitals;
+        for(Hospital hospital: hospitals){
+            this.hospitals.add(hospital.getName() + ", " + hospital.getStreet() + ", " + hospital.getCity());
+        }
     }
 
     public String getName() {
@@ -42,11 +44,11 @@ public class DoctorHospital {
         this.specialization = specialization;
     }
 
-    public Set<Hospital> getHospitals() {
+    public Set<String> getHospitals() {
         return hospitals;
     }
 
-    public void setHospitals(Set<Hospital> hospitals) {
+    public void setHospitals(Set<String> hospitals) {
         this.hospitals = hospitals;
     }
 }

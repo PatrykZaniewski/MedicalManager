@@ -87,6 +87,10 @@ public class EventService {
             return -5;
         }
 
+        if(!operation.getSpecialization().equals(doctor.getSpecialization())){
+            return -6;
+        }
+
         Event event = new Event();
         event.setPatient(patient);
         event.setDoctor(doctor);

@@ -15,7 +15,7 @@ public class Hospital {
     private String city;
     @Column(name = "ispublic")
     private boolean isPublic;
-    @ManyToMany(mappedBy = "hospitals")
+    @ManyToMany(mappedBy = "hospitals", cascade = CascadeType.ALL)
     private Set<Doctor> doctors = new HashSet<>();
 
     public int getId() {

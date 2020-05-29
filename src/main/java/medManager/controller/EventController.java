@@ -37,8 +37,23 @@ public class EventController {
         if (code == 0) {
             return new ResponseEntity<>("Event added", HttpStatus.OK);
         }
-        if (code == -1) {
+        else if (code == -1) {
             return new ResponseEntity<>("Missing data in json", HttpStatus.BAD_REQUEST);
+        }
+        else if (code == -2) {
+            return new ResponseEntity<>("Patient not found", HttpStatus.BAD_REQUEST);
+        }
+        else if (code == -3) {
+            return new ResponseEntity<>("Doctor not found", HttpStatus.BAD_REQUEST);
+        }
+        else if (code == -4) {
+            return new ResponseEntity<>("Hospital not found", HttpStatus.BAD_REQUEST);
+        }
+        else if (code == -5) {
+            return new ResponseEntity<>("Operation not found", HttpStatus.BAD_REQUEST);
+        }
+        else if (code == -6) {
+            return new ResponseEntity<>("This doctor cannot perform this type of operation", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Incorrect patient/doctor/hospital/operation id", HttpStatus.BAD_REQUEST);
 

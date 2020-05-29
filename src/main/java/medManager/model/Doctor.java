@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "doctor")
 public class Doctor {
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "doctor_hospital",
             joinColumns = {@JoinColumn(name = "id_doctor")},
