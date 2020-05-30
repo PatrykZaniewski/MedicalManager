@@ -36,24 +36,20 @@ public class EventController {
         int code = eventService.addOne(payload);
         if (code == 0) {
             return new ResponseEntity<>("Event added", HttpStatus.OK);
-        }
-        else if (code == -1) {
+        } else if (code == -1) {
             return new ResponseEntity<>("Missing data in json", HttpStatus.BAD_REQUEST);
-        }
-        else if (code == -2) {
+        } else if (code == -2) {
             return new ResponseEntity<>("Patient not found", HttpStatus.BAD_REQUEST);
-        }
-        else if (code == -3) {
+        } else if (code == -3) {
             return new ResponseEntity<>("Doctor not found", HttpStatus.BAD_REQUEST);
-        }
-        else if (code == -4) {
+        } else if (code == -4) {
             return new ResponseEntity<>("Hospital not found", HttpStatus.BAD_REQUEST);
-        }
-        else if (code == -5) {
+        } else if (code == -5) {
             return new ResponseEntity<>("Operation not found", HttpStatus.BAD_REQUEST);
-        }
-        else if (code == -6) {
+        } else if (code == -6) {
             return new ResponseEntity<>("This doctor cannot perform this type of operation", HttpStatus.BAD_REQUEST);
+        } else if (code == -7) {
+            return new ResponseEntity<>("This doctor is not working in this hospital", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Incorrect patient/doctor/hospital/operation id", HttpStatus.BAD_REQUEST);
 
@@ -87,7 +83,8 @@ public class EventController {
                                                    @RequestParam(required = false, name = "maxCost") String maxCost,
                                                    @RequestParam(required = false, name = "doctorName") String doctor,
                                                    @RequestParam(required = false, name = "hospitalName") String hospital,
-                                                   @RequestParam(required = false, name = "patientName") String patient) {
+                                                   @RequestParam(required = false, name = "patientName") String patient,
+                                                   @RequestParam(required = false, name = "operationName") String operation) {
         if (city == null) {
             city = "";
         }
@@ -106,12 +103,15 @@ public class EventController {
         if (patient == null) {
             patient = "";
         }
+        if (operation == null) {
+            operation = "";
+        }
 
         ArrayList<Event> events;
 
         try {
             Boolean.parseBoolean(isPublic);
-            events = eventService.getFiltered(city, isPublic, Integer.parseInt(minCost), Integer.parseInt(maxCost), doctor, hospital, patient);
+            events = eventService.getFiltered(city, isPublic, Integer.parseInt(minCost), Integer.parseInt(maxCost), doctor, hospital, patient, operation);
         } catch (NumberFormatException e) {
             return new ResponseEntity<>("Wrong data in json. Parse problem.", HttpStatus.BAD_REQUEST);
         }

@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EventService {
@@ -90,6 +87,14 @@ public class EventService {
         if(!operation.getSpecialization().equals(doctor.getSpecialization())){
             return -6;
         }
+
+        Set<Hospital> hospitals = doctor.getHospitals();
+        if(!hospitals.contains(hospital)){
+            return -7;
+        }
+
+
+
 
         Event event = new Event();
         event.setPatient(patient);
@@ -177,7 +182,7 @@ public class EventService {
         return 0;
     }
 
-    public ArrayList<Event> getFiltered(String city, String isPublic, int minCost, int maxCost, String doctorName, String hospitalName, String patientName) {
+    public ArrayList<Event> getFiltered(String city, String isPublic, int minCost, int maxCost, String doctorName, String hospitalName, String patientName, String operation) {
         List<List<Event>> events = new ArrayList<>();
         events.add(eventRepository.findAll());
         if (!city.equals("")) {
@@ -241,6 +246,16 @@ public class EventService {
             for (Event event : events.get(0)) {
 
                 if ((event.getHospital().getName()).equals(hospitalName)) {
+                    subList.add(event);
+                }
+            }
+            events.add(subList);
+        }
+        if (!operation.equals("")) {
+            List<Event> subList = new ArrayList<>();
+            for (Event event : events.get(0)) {
+
+                if ((event.getOperation().getName()).equals(operation)) {
                     subList.add(event);
                 }
             }

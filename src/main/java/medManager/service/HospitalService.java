@@ -158,7 +158,7 @@ public class HospitalService {
         Set<Patient> patients = new HashSet<>();
         Set<Doctor> doctors = new HashSet<>();
 
-        ArrayList<Event> hospitalEvents = eventService.getFiltered("", "", 0, 0, "", "", "");
+        ArrayList<Event> hospitalEvents = eventService.getFiltered("", "", 0, 0, "", "", "", "");
 
         for(Event event: hospitalEvents){
             patients.add(event.getPatient());
